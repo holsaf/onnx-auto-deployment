@@ -219,7 +219,8 @@ EC2_SSH_KEY
 
 `MODEL_URL` is the model deployed to the running container. `TEST_MODEL` is the model downloaded during the `test` stage (it can point to the same file or to a smaller/faster ONNX model for CI).
 
-Optional S3 log secrets:
+S3 log secrets (optional for the app to run locally, but required to satisfy the
+requirement that prediction logs are persisted in a bucket):
 
 ```text
 PREDICTION_BUCKET
@@ -227,6 +228,11 @@ AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY
 AWS_DEFAULT_REGION
 ```
+
+When configured, the deployed container uploads `predictions_dev.txt` /
+`predictions_prod.txt` to `s3://PREDICTION_BUCKET/predictions/predictions_<env>.txt`
+after every prediction, and restores it from there on startup so history survives
+redeploys.
 
 ## Branch strategy
 

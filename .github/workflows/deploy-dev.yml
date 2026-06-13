@@ -58,4 +58,9 @@ jobs:
               -p 8001:8000 \
               -e MODEL_URL="${{ secrets.MODEL_URL }}" \
               -e PREDICTION_LOG_PATH="predictions_dev.txt" \
+              -e PREDICTION_BUCKET="${{ secrets.PREDICTION_BUCKET }}" \
+              -e PREDICTION_BUCKET_KEY="predictions/predictions_dev.txt" \
+              -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+              -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+              -e AWS_DEFAULT_REGION="${{ secrets.AWS_DEFAULT_REGION }}" \
               onnx-api-dev

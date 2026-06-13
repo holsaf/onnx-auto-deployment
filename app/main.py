@@ -1,13 +1,18 @@
 from fastapi import FastAPI, File, UploadFile
 
 from app.model import get_session, predict_image
-from app.utils import save_prediction_log
+from app.utils import download_prediction_log_from_s3, save_prediction_log
 
 app = FastAPI(
     title="ONNX Automatic Deployment API",
     description="FastAPI service for serving an externally stored ONNX model.",
     version="1.0.0",
 )
+
+
+@app.on_event("startup")
+def restore_prediction_log() -> None:
+    download_prediction_log_from_s3()
 
 
 @app.get("/")
