@@ -40,10 +40,12 @@ def health() -> dict:
 async def predict(file: UploadFile = File(...)) -> dict:
     image_bytes = await file.read()
     prediction = predict_image(image_bytes)
-    log_info = save_prediction_log(prediction)
+    save_prediction_log(prediction)
 
     return {
         "filename": file.filename,
-        "prediction": prediction,
-        "log": log_info,
+        "prediction": {
+            "predicted_class_name": prediction["predicted_class_name"],
+            "confidence": prediction["confidence"],
+        },
     }

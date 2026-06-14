@@ -11,6 +11,7 @@ from app.config import settings
 from app.preprocessing import preprocess_image
 
 _session: ort.InferenceSession | None = None
+_class_names: list[str] | None = None
 
 
 def download_from_url(url: str, destination: Path) -> None:
@@ -51,6 +52,18 @@ def download_model() -> Path:
     return model_path
 
 
+def load_class_names() -> list[str]:
+    """Return the ImageNet class names, indexed by model output position."""
+    global _class_names
+
+    if _class_names is None:
+        labels_path = Path(__file__).parent / "imagenet_classes.txt"
+        with labels_path.open("r", encoding="utf-8") as file:
+            _class_names = [line.strip() for line in file if line.strip()]
+
+    return _class_names
+
+
 def get_session() -> ort.InferenceSession:
     """Return a cached ONNX Runtime inference session."""
     global _session
@@ -84,10 +97,12 @@ def predict_image(image_bytes: bytes) -> dict:
     probabilities = softmax(scores)
     predicted_class = int(np.argmax(probabilities))
     confidence = float(np.max(probabilities))
+    class_names = load_class_names()
 
     return {
         "environment": os.getenv("APP_ENV", settings.app_env),
         "predicted_class": predicted_class,
+        "predicted_class_name": class_names[predicted_class],
         "confidence": round(confidence, 6),
         "input_name": input_name,
         "output_name": output_name,

@@ -20,6 +20,10 @@ def test_prediction_metric_with_external_test_image():
     assert "confidence" in result
     assert result["confidence"] >= settings.min_confidence
 
+    assert "predicted_class_name" in result
+    assert isinstance(result["predicted_class_name"], str)
+    assert result["predicted_class_name"]
+
     if settings.expected_class_ids:
         expected_ids = {
             int(value.strip())

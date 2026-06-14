@@ -23,6 +23,9 @@ Automate the deployment of an ONNX model so users can consume it through HTTP en
 - Each environment exposes a different endpoint.
 - Each prediction is stored in a TXT log file.
 - The log file can optionally be synchronized to an AWS S3 bucket.
+- `/predict` returns the predicted class label (`predicted_class_name`, looked up from
+  `app/imagenet_classes.txt`) and the `confidence` score. The full result, including the
+  numeric class id, is still recorded in the prediction log.
 
 ## Proposed cloud architecture
 
