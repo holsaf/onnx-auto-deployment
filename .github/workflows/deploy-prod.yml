@@ -64,6 +64,7 @@ jobs:
             docker run -d \
               --name onnx-api-prod \
               -p 8002:8000 \
+              -e APP_ENV="prod" \
               -e MODEL_URL="${{ secrets.MODEL_URL }}" \
               -e PREDICTION_LOG_PATH="predictions_prod.txt" \
               -e PREDICTION_BUCKET="${{ secrets.PREDICTION_BUCKET }}" \
