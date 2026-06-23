@@ -30,7 +30,7 @@ def health() -> dict:
     session = get_session()
     return {
         "status": "ok",
-        "test": "test_1",
+        "test": "test_2",
         "model_loaded": True,
         "inputs": [item.name for item in session.get_inputs()],
         "outputs": [item.name for item in session.get_outputs()],
